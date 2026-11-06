@@ -19,6 +19,7 @@
 
 ### 3. Address.Torque
 - Required -> `missing_torque`, ERROR
+- Numeric and finite (decimal comma accepted) -> `invalid_torque_format`, ERROR
 - Possitive number ( > 0) -> `non_possitive_torque`, ERROR
 
 ### 4. Address.StartDate
@@ -39,5 +40,29 @@
 ### 7. Address.Notes
 - Required -> `missing_notes`, INFO
 
-### 8. Unique together
-- (Code, Torque) are unique together -> `duplicate_record`, WARNING
+### 8. Duplicate records
+- Identical normalized records -> `duplicate_record`, WARNING
+
+### 9. Overlapping specifications
+- Same Code, overlapping inclusive dates, different torque -> `overlapping_torque_specifications`, ERROR
+- Same Code and torque with overlapping dates -> `overlapping_torque_specifications`, WARNING
+- Check valid dates and torque only; Notes may explain an overlap.
+- Report at most 1,000 pairs; `overlapping_torque_specifications_truncated` warns if
+  further pairs (including potential errors) are unevaluated. Order: code encounter,
+  then ascending start date.
+
+### 10. Implausible torque
+- Finite positive torque outside the inclusive range -> `implausible_torque`, WARNING;
+  non-positive torque remains an error. Values are not corrected.
+- Bounds default independently to 0 and 1000 Nm. Override with backend environment
+  variables `PLAUSIBLE_TORQUE_MIN` and `PLAUSIBLE_TORQUE_MAX` (decimal points).
+  Bounds must be finite, nonnegative and ordered; invalid configuration raises an error.
+
+### 11. Notes and dates
+- Unambiguous date in Notes contradicts the date range -> `notes_date_mismatch`, WARNING (heuristic)
+
+### 12. Filename and metadata
+- Parsed filename metadata differs from XML metadata -> `filename_metadata_mismatch`, WARNING
+
+### 13. Addresses
+- No Address entries -> `empty_addresses`, WARNING

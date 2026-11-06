@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field
+from decimal import Decimal, InvalidOperation
+import math
 from typing import Optional
 import xml.etree.ElementTree as ET
 
@@ -10,6 +12,7 @@ class Address:
     notes: Optional[str]
     start_date: Optional[str]
     end_date: Optional[str]
+    torque_raw: Optional[str] = None
 
 
 @dataclass
@@ -18,6 +21,10 @@ class TorqueDocument:
     document_date: Optional[str]
     notes: Optional[str]
     addresses: list[Address] = field(default_factory=list)
+    manufacturer: Optional[str] = None
+    series: Optional[str] = None
+    main_group: Optional[str] = None
+    sub_group: Optional[str] = None
 
 
 def parse_torque_xml(content: bytes, filename: str) -> TorqueDocument:
@@ -28,6 +35,10 @@ def parse_torque_xml(content: bytes, filename: str) -> TorqueDocument:
         filename=filename,
         document_date=_text(root, "DocumentDate"),
         notes=_text(root, "Notes"),
+        manufacturer=_text(root, "Manufacturer"),
+        series=_text(root, "Series"),
+        main_group=_text(root, "MainGroup"),
+        sub_group=_text(root, "SubGroup"),
     )
 
     for addr_el in root.findall(".//Address"):
@@ -41,6 +52,7 @@ def parse_torque_xml(content: bytes, filename: str) -> TorqueDocument:
                 notes=_text(addr_el, "Notes"),
                 start_date=_text(addr_el, "StartDate"),
                 end_date=_text(addr_el, "EndDate"),
+                torque_raw=torque_text or None,
             )
         )
 
@@ -52,6 +64,22 @@ def _text(el: ET.Element, tag: str) -> Optional[str]:
     return child.text.strip() if child is not None and child.text else None
 
 
-def _parse_european_decimal(value: str) -> float:
-    """Parse European decimal format (comma as separator)."""
-    return float(value.replace(",", "."))
+def _parse_european_decimal(value: str) -> Optional[float]:
+    """Return a JSON-safe number, retaining invalid input separately on Address."""
+    try:
+        parsed = float(value.replace(",", "."))
+    except ValueError:
+        return None
+    return parsed if math.isfinite(parsed) else None
+
+
+def exact_torque(address: Address) -> Optional[Decimal]:
+    """Use the source text for comparisons; the public float is only a projection."""
+    value = address.torque_raw if address.torque_raw else address.torque
+    if value is None:
+        return None
+    try:
+        parsed = Decimal(str(value).replace(",", "."))
+    except InvalidOperation:
+        return None
+    return parsed if parsed.is_finite() else None

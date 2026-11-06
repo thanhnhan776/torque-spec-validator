@@ -11,24 +11,35 @@ from .base import BaseValidator, ValidationResult
 # pattern. Add your own validators below.
 # ──────────────────────────────────────────────────────────────
 
-from .missing_torque import MissingTorqueValidator
 from .missing_document_date import MissingDocumentDateValidator
 from .invalid_date_format import InvalidDateFormatValidator
-from .address_rules import AddressDateValidator, AddressFieldsValidator, DuplicateRecordValidator
+from .address_dates import AddressDateValidator
+from .address_fields import AddressFieldsValidator
+from .duplicates import DuplicateRecordValidator
+from .notes_dates import NotesDateValidator
+from .overlaps import OverlappingTorqueSpecificationsValidator
+from .document_rules import DocumentMetadataValidator, EmptyAddressesValidator
+from .torque_range import ImplausibleTorqueValidator, configured_torque_range
 
 VALIDATORS: list[BaseValidator] = [
-    MissingTorqueValidator(),
     MissingDocumentDateValidator(),
     InvalidDateFormatValidator(),
     AddressFieldsValidator(),
     AddressDateValidator(),
     DuplicateRecordValidator(),
+    OverlappingTorqueSpecificationsValidator(),
+    NotesDateValidator(),
+    DocumentMetadataValidator(),
+    EmptyAddressesValidator(),
 ]
 
 
 def run_all_validators(document: TorqueDocument) -> list[ValidationResult]:
     """Run all registered validators and collect results."""
+    torque_range = configured_torque_range()
     results = []
     for validator in VALIDATORS:
         results.extend(validator.validate(document))
+    if torque_range is not None:
+        results.extend(ImplausibleTorqueValidator(*torque_range).validate(document))
     return results

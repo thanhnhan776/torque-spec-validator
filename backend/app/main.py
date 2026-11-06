@@ -25,6 +25,10 @@ async def upload_file(file: UploadFile):
         "filename": file.filename,
         "document_date": document.document_date,
         "notes": document.notes,
+        "manufacturer": document.manufacturer,
+        "series": document.series,
+        "main_group": document.main_group,
+        "sub_group": document.sub_group,
         "addresses": [
             {
                 "code": a.code,
