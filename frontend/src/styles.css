@@ -1,0 +1,351 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #1e293b;
+  background: #f5f7fa;
+  font-synthesis: none;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button,
+select,
+input[type="file"]::file-selector-button {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #334155;
+  padding: 0.45rem 0.7rem;
+}
+
+button,
+input[type="file"]::file-selector-button {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover,
+input[type="file"]::file-selector-button:hover {
+  background: #e9f1f2;
+  border-color: #83aeb1;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid #16808a;
+  outline-offset: 2px;
+}
+
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+}
+
+select {
+  min-width: 9rem;
+  margin-left: 0.5rem;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  color: #172e38;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  margin: 0 0 1.25rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  overflow-wrap: anywhere;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+table {
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+th,
+td {
+  padding: 0.85rem 0.9rem;
+  text-align: left;
+  vertical-align: middle;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background: #edf2f4;
+  color: #475569;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+td button {
+  margin: 0.15rem;
+  font-size: 0.8rem;
+}
+
+td code {
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.app-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-header h1 {
+  margin-bottom: 0.4rem;
+}
+
+.page-header p {
+  margin: 0;
+}
+
+.eyebrow {
+  color: #14717a;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.muted,
+.helper-text {
+  color: #64748b;
+}
+
+.helper-text {
+  font-size: 0.85rem;
+}
+
+.upload-panel,
+.document-panel {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+}
+
+.upload-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.upload-panel label {
+  font-weight: 650;
+}
+
+.document-panel {
+  margin-top: 1.5rem;
+}
+
+.document-panel h2 {
+  margin: 0.3rem 0 0.6rem;
+}
+
+.document-panel p {
+  margin: 0;
+}
+
+.error-message {
+  color: #991b1b;
+  background: #fff1f2;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  color: #475569;
+}
+
+.summary-card strong {
+  font-size: 1.55rem;
+  line-height: 1.2;
+  color: #1e293b;
+}
+
+.summary-card span {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.summary-error {
+  border-left: 4px solid #c24141;
+}
+
+.summary-warning {
+  border-left: 4px solid #b7791f;
+}
+
+.summary-info {
+  border-left: 4px solid #32789a;
+}
+
+.filter-bar {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.filter-bar select {
+  margin-left: 0;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #dce5e9;
+  border-radius: 9px;
+  background: white;
+}
+
+.table-wrap:focus-visible {
+  outline: 3px solid #16808a;
+  outline-offset: 2px;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table tbody tr:hover {
+  background: #f6fafb;
+}
+
+.records-table td:nth-child(3),
+.records-table td:nth-child(4) {
+  white-space: nowrap;
+}
+
+.severity-badge,
+.issue-button {
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.severity-badge {
+  padding: 0.28rem 0.55rem;
+}
+
+.severity-error {
+  color: #9f2929;
+  background: #ffeded;
+  border-color: #f3c9c9;
+}
+
+.severity-warning {
+  color: #805008;
+  background: #fff6df;
+  border-color: #ecd59f;
+}
+
+.severity-info {
+  color: #175d7c;
+  background: #e8f5fb;
+  border-color: #b7dce9;
+}
+
+.match-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.highlighted {
+  outline: 3px solid #16808a;
+  outline-offset: -3px;
+  background: #e8f6f4 !important;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .upload-panel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  input[type="file"] {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
