@@ -12,10 +12,14 @@ from .base import BaseValidator, ValidationResult
 # ──────────────────────────────────────────────────────────────
 
 from .missing_torque import MissingTorqueValidator
+from .missing_document_date import MissingDocumentDateValidator
+from .invalid_date_format import InvalidDateFormatValidator
 
 VALIDATORS: list[BaseValidator] = [
     MissingTorqueValidator(),
     # TODO: Add your validators here
+    MissingDocumentDateValidator(),
+    InvalidDateFormatValidator(),
 ]
 
 
