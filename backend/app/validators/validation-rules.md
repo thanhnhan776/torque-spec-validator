@@ -16,10 +16,10 @@
 
 ### 2. Address.Code
 - Required -> `missing_code`, ERROR
-- Possitive number ( > 0) -> `non_possitive_torque`, ERROR
 
 ### 3. Address.Torque
 - Required -> `missing_torque`, ERROR
+- Possitive number ( > 0) -> `non_possitive_torque`, ERROR
 
 ### 4. Address.StartDate
 - Required -> `missing_start_date`, WARNING
@@ -40,4 +40,4 @@
 - Required -> `missing_notes`, INFO
 
 ### 8. Unique together
-- (Code, Torque) are unique together
+- (Code, Torque) are unique together -> `duplicate_record`, WARNING

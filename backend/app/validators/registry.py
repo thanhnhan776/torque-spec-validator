@@ -14,12 +14,15 @@ from .base import BaseValidator, ValidationResult
 from .missing_torque import MissingTorqueValidator
 from .missing_document_date import MissingDocumentDateValidator
 from .invalid_date_format import InvalidDateFormatValidator
+from .address_rules import AddressDateValidator, AddressFieldsValidator, DuplicateRecordValidator
 
 VALIDATORS: list[BaseValidator] = [
     MissingTorqueValidator(),
-    # TODO: Add your validators here
     MissingDocumentDateValidator(),
     InvalidDateFormatValidator(),
+    AddressFieldsValidator(),
+    AddressDateValidator(),
+    DuplicateRecordValidator(),
 ]
 
 
