@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { UploadResponse, Validation } from "./types";
+import UploadHistory from "./UploadHistory";
+import ExportCsv from "./ExportCsv";
 
 const SEVERITY_ORDER: Record<Validation["severity"], number> = {
   error: 0,
@@ -50,6 +52,8 @@ export default function App() {
     "all",
   );
   const [highlighted, setHighlighted] = useState<string | null>(null);
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
+  const uploading = useRef(false);
 
   const goTo = (id: string) => {
     const target = document.getElementById(id);
@@ -82,6 +86,7 @@ export default function App() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    uploading.current = true;
     setLoading(true);
     setError(null);
     setResult(null);
@@ -97,9 +102,11 @@ export default function App() {
       }
       setResult(await res.json());
       setSeverity("all");
+      setHistoryRefreshKey((current) => current + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
+      uploading.current = false;
       setLoading(false);
     }
   };
@@ -132,6 +139,18 @@ export default function App() {
         </p>
       )}
 
+      <UploadHistory
+        refreshKey={historyRefreshKey}
+        disabled={loading}
+        onSelect={(snapshot) => {
+          if (uploading.current) return;
+          setResult(snapshot);
+          setSeverity("all");
+          setHighlighted(null);
+          setError(null);
+        }}
+      />
+
       {result && (
         <>
           <section className="document-panel" aria-label="Document details">
@@ -147,6 +166,7 @@ export default function App() {
               <span className="muted">Document date:</span>{" "}
               {result.document_date ?? "—"}
             </p>
+            <ExportCsv result={result} />
           </section>
 
           <section className="summary-section" aria-label="Validation summary">

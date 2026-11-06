@@ -1,18 +1,24 @@
 services:
   backend:
     build: ./backend
+    environment:
+      UPLOAD_HISTORY_DB: /history/uploads.sqlite3
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - ./backend:/app
       - ./data:/data
+      - upload-history:/history
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     depends_on:
       - backend
+
+volumes:
+  upload-history:

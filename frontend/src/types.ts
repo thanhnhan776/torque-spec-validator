@@ -14,9 +14,18 @@ export interface Validation {
 }
 
 export interface UploadResponse {
+  id: string;
+  uploaded_at: string;
   filename: string;
   document_date: string | null;
   notes: string | null;
   addresses: Address[];
   validations: Validation[];
+}
+
+export interface UploadSummary {
+  id: string;
+  uploaded_at: string;
+  filename: string;
+  counts: Record<Validation["severity"], number>;
 }

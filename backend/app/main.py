@@ -1,11 +1,11 @@
 from fastapi import FastAPI, UploadFile, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime, timezone
+from uuid import uuid4
+from .history import get_snapshot, list_snapshots, save_snapshot
 from .parser import parse_torque_xml
-from .validators.base import ValidationResult
 from .validators.registry import run_all_validators
 
 app = FastAPI(title="Torque Spec Validator")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
 @app.post("/api/upload")
@@ -21,7 +21,9 @@ async def upload_file(file: UploadFile):
 
     validations = run_all_validators(document)
 
-    return {
+    snapshot = {
+        "id": str(uuid4()),
+        "uploaded_at": datetime.now(timezone.utc).isoformat(),
         "filename": file.filename,
         "document_date": document.document_date,
         "notes": document.notes,
@@ -41,3 +43,18 @@ async def upload_file(file: UploadFile):
         ],
         "validations": [v.model_dump() for v in validations],
     }
+    save_snapshot(snapshot)
+    return snapshot
+
+
+@app.get("/api/uploads")
+def list_uploads():
+    return list_snapshots()
+
+
+@app.get("/api/uploads/{upload_id}")
+def get_upload(upload_id: str):
+    snapshot = get_snapshot(upload_id)
+    if snapshot is None:
+        raise HTTPException(404, "Upload not found")
+    return snapshot

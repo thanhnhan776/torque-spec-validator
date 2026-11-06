@@ -86,6 +86,8 @@ class ValidatorTests(unittest.TestCase):
         self.assertEqual(
             set(response),
             {
+                "id",
+                "uploaded_at",
                 "filename",
                 "document_date",
                 "notes",
